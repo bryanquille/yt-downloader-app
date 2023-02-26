@@ -1,9 +1,11 @@
 from pytube import YouTube
 import os
 
-def yt_dowloader(url):
-    # This function recievs an url as argument to download
-    # a youtube video. (url: ir must be a youtube video url)
+def yt_dowloader(url: str):
+    """
+    This function accepts an url as an argument to download
+    a youtube video. (url: it must be a youtube video url)
+    """
 
     # Creating a directory to save the downloaded videos
     if os.path.exists("Download videos"):
@@ -17,7 +19,3 @@ def yt_dowloader(url):
     download_video.download(r"Download videos")
 
     print("The video was download succesfully.")
-    
-
-
-# yt_dowloader("https://youtu.be/W9DAKRu8nBU")
