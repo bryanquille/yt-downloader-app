@@ -17,7 +17,7 @@ app.geometry("800x420")
 app.resizable(height=False, 
               width=False)
 app.config(bg=color_3)
-app.iconbitmap("youtube-logo.ico")
+app.iconbitmap("images/youtube-logo.ico")
 
 
 # Setting the font
@@ -44,7 +44,7 @@ label_0.grid(row=0,
              column=0, 
              padx=30)
 
-img = PhotoImage(file="youtube-logo.png")
+img = PhotoImage(file="images/youtube-logo.png")
 
 label_1 = Label(frame_0, 
                 image=img,
