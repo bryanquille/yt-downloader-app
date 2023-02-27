@@ -1,14 +1,28 @@
 import os
+import sys
 import tkinter.font
 import tkinter.messagebox
 from tkinter import *
 from pytube import YouTube
+
 
 # Colors
 color_1 = "#083358"
 color_2 = "#ff5722"
 color_3 = "#0f4471"
 color_4 = "#f6f6f6"
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 
 # GUI
 app = Tk()
@@ -17,7 +31,8 @@ app.geometry("800x420")
 app.resizable(height=False, 
               width=False)
 app.config(bg=color_3)
-app.iconbitmap("images/youtube-logo.ico")
+path = resource_path("images\\youtube-logo.ico")
+app.iconbitmap(path)
 
 
 # Setting the font
@@ -44,7 +59,8 @@ label_0.grid(row=0,
              column=0, 
              padx=30)
 
-img = PhotoImage(file="images/youtube-logo.png")
+path = resource_path("images\\youtube-logo.png")
+img = PhotoImage(file=path)
 
 label_1 = Label(frame_0, 
                 image=img,
@@ -79,8 +95,8 @@ entry_0.grid(row=0,
 
 # Downloading the video
 def yt_downloader():
-    #This function accepts an url as an argument to download
-    #a youtube video. (url: it must be a youtube video url)
+    """This function accepts an url as an argument to download
+    a youtube video. (url: it must be a youtube video url)"""
 
     # Creating a directory to save the downloaded videos
     if os.path.exists("Download videos"):
