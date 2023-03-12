@@ -1,1 +1,5 @@
 'Download videos'/
+'Download audios'/
+build/
+dist/yt_downloader_app
+yt_downloader_app.spec
