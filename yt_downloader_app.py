@@ -3,6 +3,7 @@ import sys
 import tkinter.font
 import tkinter.messagebox
 from tkinter import *
+from tkinter.ttk import Combobox
 from pytube import YouTube
 
 
@@ -27,7 +28,7 @@ def resource_path(relative_path):
 # GUI
 app = Tk()
 app.title("Youtube Downloader App")
-app.geometry("800x420")
+app.geometry("800x500")
 app.resizable(height=False, 
               width=False)
 app.config(bg=color_3)
@@ -69,18 +70,43 @@ label_1.grid(row=0,
              column=1)
 
 
-# Getting url
+# Frame 1
 frame_1 = Frame(app, 
                 width="700", 
                 height="200", 
                 bg=color_3)
 frame_1.pack(pady=20)
 
-label_2 = Label(frame_1, text="URL:", 
+# Choosing format to download
+label_2 = Label(frame_1, 
+                text="Format:", 
                 bg=color_3, 
                 fg=color_4,
                 font=normal_font) 
 label_2.grid(row=0, 
+             column=0, 
+             padx=30,
+             pady=20)
+
+combo = Combobox(frame_1, 
+                 width="48",
+                 justify="center",
+                 font=normal_font)
+combo["values"] = ("mp3", 
+                   "mp4")
+combo.current(0)
+combo.grid(row=0, 
+           column=1, 
+           padx=30)
+
+
+# Getting url
+label_3 = Label(frame_1, 
+                text="URL:", 
+                bg=color_3, 
+                fg=color_4,
+                font=normal_font) 
+label_3.grid(row=1, 
              column=0, 
              padx=30)
 
@@ -89,28 +115,57 @@ entry_0 = Entry(frame_1,
                 bg=color_4, 
                 fg=color_1, 
                 font=normal_font)
-entry_0.grid(row=0, 
+entry_0.grid(row=1, 
              column=1)
 
 
 # Downloading the video
 def yt_downloader():
-    """This function accepts an url as an argument to download
-    a youtube video. (url: it must be a youtube video url)"""
+    """This function accepts an url as an argument to download a 
+    youtube video or audio. (url: it must be a youtube video url)"""
 
-    # Creating a directory to save the downloaded videos
-    if os.path.exists("Download videos"):
-        pass
-    else:
-        os.mkdir("Download videos")
+    # Getting the format
+    output_format = combo.get()
+    
+    
+    # Downloading on dependance of format
+    if output_format == "mp3":
+        
+        # Creating a directory to save the downloaded audios
+        if os.path.exists("Download audios"):
+            pass
+        else:
+            os.mkdir("Download audios")
 
-    # Downloading the video
-    video = YouTube(entry_0.get())
-    download_video = video.streams.get_highest_resolution()
-    download_video.download(r"Download videos")
+        # Downloading the audio
+        audio = YouTube(entry_0.get())
+        download_audio = audio.streams.filter(only_audio=True).first()
+        out_file = download_audio.download(r"Download audios")
+        
+        # Saving the file with mp3 format
+        base, ext = os.path.splitext(out_file)
+        new_file = base + '.mp3'
+        os.rename(out_file, new_file)
 
-    tkinter.messagebox.showinfo("Succes!", 
-                                "The video was download succesfully.")
+        tkinter.messagebox.showinfo("Succes!", 
+                                    "The audio was downloaded succesfully.")
+        
+        
+    elif output_format == "mp4":   
+           
+        # Creating a directory to save the downloaded videos
+        if os.path.exists("Download videos"):
+            pass
+        else:
+            os.mkdir("Download videos")
+
+        # Downloading the video
+        video = YouTube(entry_0.get())
+        download_video = video.streams.get_highest_resolution()
+        download_video.download(r"Download videos")
+
+        tkinter.messagebox.showinfo("Succes!", 
+                                    "The video was downloaded succesfully.")
 
 
 # Button to start downloading the video
